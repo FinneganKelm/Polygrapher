@@ -1,0 +1,141 @@
+[gd_scene load_steps=8 format=3 uid="uid://d122u22xc3abm"]
+
+[ext_resource type="PackedScene" uid="uid://dicg5cnpvna0j" path="res://dodec.glb" id="1_y3bfd"]
+[ext_resource type="Script" path="res://dodec.gd" id="2_ul086"]
+
+[sub_resource type="Environment" id="Environment_6l3cr"]
+background_mode = 1
+background_color = Color(1, 1, 1, 1)
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0l0xn"]
+shading_mode = 0
+albedo_color = Color(0.462745, 0.439216, 0.415686, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_igxs8"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission = Color(0.415686, 0.415686, 0.415686, 1)
+emission_operator = 1
+backlight_enabled = true
+backlight = Color(0.996078, 0.564706, 0.764706, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4hi14"]
+font_size = 56
+
+[sub_resource type="LabelSettings" id="LabelSettings_dycr2"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="dodec" instance=ExtResource("1_y3bfd")]
+script = ExtResource("2_ul086")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
+environment = SubResource("Environment_6l3cr")
+
+[node name="Solid" parent="." index="1"]
+material_override = SubResource("StandardMaterial3D_0l0xn")
+
+[node name="Solid_001" parent="." index="2"]
+material_override = SubResource("StandardMaterial3D_igxs8")
+
+[node name="Camera3D" type="Camera3D" parent="." index="3"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.52, 0, 0)
+top_level = true
+
+[node name="UI" type="Control" parent="." index="4"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="UI" index="0"]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_right = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Panel/VBoxContainer" index="0"]
+layout_mode = 2
+text = "Angle"
+label_settings = SubResource("LabelSettings_4hi14")
+horizontal_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="UI/Panel/VBoxContainer" index="1"]
+layout_mode = 2
+max_value = 360.0
+prefix = "    "
+suffix = "degrees"
+
+[node name="Label2" type="Label" parent="UI/Panel/VBoxContainer" index="2"]
+layout_mode = 2
+text = "Axis"
+label_settings = SubResource("LabelSettings_4hi14")
+horizontal_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="UI/Panel/VBoxContainer" index="3"]
+layout_mode = 2
+item_count = 3
+selected = 0
+popup/item_0/text = "X"
+popup/item_0/id = 0
+popup/item_1/text = "Y"
+popup/item_1/id = 1
+popup/item_2/text = "Z"
+popup/item_2/id = 2
+
+[node name="Go" type="Button" parent="UI/Panel/VBoxContainer" index="4"]
+layout_mode = 2
+text = "GO"
+
+[node name="Label" type="Label" parent="UI" index="1"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.938
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -167.0
+offset_top = -41.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Camera Zoom"
+label_settings = SubResource("LabelSettings_dycr2")
+
+[node name="HSlider" type="HSlider" parent="UI" index="2"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+min_value = 1.5
+max_value = 3.0
+step = 0.1
+value = 1.5
+
+[connection signal="value_changed" from="UI/Panel/VBoxContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="item_selected" from="UI/Panel/VBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="pressed" from="UI/Panel/VBoxContainer/Go" to="." method="_on_go_pressed"]
